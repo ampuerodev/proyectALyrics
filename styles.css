@@ -1,0 +1,321 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    background-color: #121212;
+    color: #eaeaea;
+    margin: 0;
+}
+
+header {
+    background: #1f1f1f;
+    color: #4caf50;
+    padding: 1rem 2rem;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.form-section, .explore-section {
+    background: #1f1f1f;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    margin-bottom: 2rem;
+}
+
+.form-section h2, .explore-section h2 {
+    margin-bottom: 1rem;
+    color: #4caf50;
+    font-size: 2rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+
+.form-group input, .form-group textarea, .form-group select {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #333;
+    border-radius: 4px;
+    font-size: 1rem;
+    background: #212121;
+    color: #eaeaea;
+}
+
+.form-group textarea {
+    resize: vertical;
+    height: 150px;
+}
+
+.btn {
+    display: inline-block;
+    background: #4caf50;
+    color: #121212;
+    padding: 0.8rem 1.5rem;
+    text-decoration: none;
+    border-radius: 4px;
+    text-align: center;
+    font-size: 1rem;
+    border: none;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background: #81c784;
+}
+
+#search-bar {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #333;
+    border-radius: 4px;
+    font-size: 1rem;
+    background: #212121;
+    color: #eaeaea;
+    margin-bottom: 1.5rem;
+}
+
+.song-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.song-card {
+    display: flex;
+    flex-direction: column;
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(135deg, #212121, #1a1a1a);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.song-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5);
+}
+
+.song-card h3 {
+    color: #4caf50;
+    background: #1f1f1f;
+    padding: 1rem;
+    text-align: center;
+    font-size: 1.5rem;
+    margin: 0;
+}
+
+.song-card-content {
+    padding: 1.5rem;
+}
+
+.song-card-content p {
+    margin: 0.5rem 0;
+    color: #eaeaea;
+}
+
+.song-card-content pre {
+    background: #121212;
+    padding: 1rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    color: #eaeaea;
+    line-height: 1.8;
+    white-space: pre-wrap;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
+    max-height: 6em; /* Limitar la altura a 6 líneas aproximadamente */
+    overflow-y: auto; /* Agregar barra de desplazamiento vertical */
+}
+
+/* Estilo personalizado para la barra de desplazamiento */
+.song-card-content pre::-webkit-scrollbar {
+    width: 8px;
+}
+
+.song-card-content pre::-webkit-scrollbar-track {
+    background: #212121;
+    border-radius: 8px;
+}
+
+.song-card-content pre::-webkit-scrollbar-thumb {
+    background: #4caf50;
+    border-radius: 8px;
+}
+
+.song-card-content pre::-webkit-scrollbar-thumb:hover {
+    background: #81c784;
+}
+
+/* Estilos para el modal */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: #1f1f1f;
+    padding: 30px;
+    border-radius: 12px;
+    text-align: center;
+    color: #eaeaea;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+    position: relative;
+    max-width: 500px;
+    width: 90%;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Animación del modal */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.close-btn {
+    cursor: pointer;
+    font-size: 24px;
+    font-weight: bold;
+    color: #eaeaea;
+    background: none;
+    border: none;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.close-btn:hover {
+    color: #4caf50;
+}
+
+.modal-content p {
+    font-size: 1.5rem;
+    margin: 1rem 0;
+    color: #4caf50;
+}
+
+.btn {
+    background: #4caf50;
+    color: #121212;
+    padding: 0.8rem 1.5rem;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    border: none;
+    cursor: pointer;
+    margin-top: 1rem;
+}
+
+.btn:hover {
+    background: #81c784;
+}
+
+/* Estilos para lyrics-container */
+.lyrics-container {
+    background: #1f1f1f;
+    border-radius: 12px;
+    padding: 3rem;
+    max-width: 900px;
+    width: 100%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    margin: 2rem auto;
+}
+
+.lyrics-container h1 {
+    font-size: 2.5rem;
+    color: #4caf50;
+    margin-bottom: 1rem;
+}
+
+.lyrics-container h2 {
+    font-size: 2rem;
+    color: #81c784;
+    margin-bottom: 1rem;
+}
+
+.lyrics-container p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+}
+
+.lyrics-container pre {
+    background: #212121;
+    color: #eaeaea;
+    padding: 1.5rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-size: 1.5rem;
+    line-height: 2rem;
+    text-align: center;
+}
+
+.lyrics-container footer {
+    text-align: center;
+    margin-top: 2rem;
+    color: #757575;
+}
+
+.lyrics-container footer a {
+    color: #4caf50;
+    text-decoration: none;
+}
+
+.lyrics-container footer a:hover {
+    text-decoration: underline;
+}
+
+/* Estilos para el botón de eliminar */
+.delete-btn {
+    background: #e53935;
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 1rem;
+}
+
+.delete-btn:hover {
+    background: #d32f2f;
+}

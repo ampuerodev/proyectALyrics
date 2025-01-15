@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalles de la Canción</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <div id="nav-container"></div>
+    <div class="lyrics-container">
+        <h1 id="song-title">Título de la Canción</h1>
+        <h2 id="song-artist">Artista</h2>
+        <p><strong>Género:</strong> <span id="song-genre">Género</span></p>
+        <pre id="song-lyrics">Letra de la Canción</pre>
+        <footer>
+            <p>&copy; 2025 Lyrics Hub | <a href="#" id="back-link">Volver al Inicio</a></p>
+        </footer>
+    </div>
+    <script>
+        async function loadComponent(containerId, componentPath) {
+            const container = document.getElementById(containerId);
+            const response = await fetch(componentPath);
+            const content = await response.text();
+            container.innerHTML = content;
+        }
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            await loadComponent('nav-container', 'nav.html');
+
+            const params = new URLSearchParams(window.location.search);
+            const title = params.get('title');
+            const artist = params.get('artist');
+            const genre = params.get('genre');
+            const lyrics = params.get('lyrics');
+
+            document.getElementById('song-title').textContent = title;
+            document.getElementById('song-artist').textContent = artist;
+            document.getElementById('song-genre').textContent = genre;
+            document.getElementById('song-lyrics').textContent = lyrics;
+
+            document.getElementById('back-link').addEventListener('click', (e) => {
+                e.preventDefault();
+                window.history.back();
+            });
+        });
+    </script>
+</body>
+</html>

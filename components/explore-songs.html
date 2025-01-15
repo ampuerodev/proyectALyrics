@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explorar Letras de Canciones</title>
+</head>
+<body>
+    <section id="explore" class="explore-section">
+        <h2>Explorar Letras de Canciones</h2>
+        <div class="form-group">
+            <label for="search-bar">Buscar Canción</label>
+            <input type="text" id="search-bar" placeholder="Ingresa el título de una canción o artista">
+        </div>
+        <div id="song-list" class="song-grid">
+            <!-- Aquí se mostrarán las canciones -->
+        </div>
+    </section>
+
+    <!-- Modal de eliminación exitosa -->
+    <div id="delete-success-modal" class="modal">
+        <div class="modal-content">
+            <span id="close-delete-modal" class="close-btn">&times;</span>
+            <p>¡Canción eliminada con éxito!</p>
+            <button class="btn" id="close-delete-btn">Cerrar</button>
+        </div>
+    </div>
+</body>
+</html>

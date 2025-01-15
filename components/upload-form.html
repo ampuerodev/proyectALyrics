@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subir Letra de Canción</title>
+</head>
+<body>
+    <section id="upload" class="form-section">
+        <h2>Subir Letra de Canción</h2>
+        <form id="upload-form">
+            <div class="form-group">
+                <label for="song-title">Título de la Canción</label>
+                <input type="text" id="song-title" name="song-title" placeholder="Escribe el título de la canción" required>
+            </div>
+            <div class="form-group">
+                <label for="artist">Artista o Banda</label>
+                <input type="text" id="artist" name="artist" placeholder="Nombre del artista o banda" required>
+            </div>
+            <div class="form-group">
+                <label for="genre">Género Musical</label>
+                <select id="genre" name="genre">
+                    <option value="">Seleccionar</option>
+                    <option value="pop">Pop</option>
+                    <option value="rock">Rock</option>
+                    <option value="hiphop">Hip-Hop</option>
+                    <option value="jazz">Jazz</option>
+                    <option value="classical">Clásica</option>
+                    <option value="classical">Salsa</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="lyrics">Letra de la Canción</label>
+                <textarea id="lyrics" name="lyrics" placeholder="Escribe la letra completa aquí" required></textarea>
+            </div>
+            <button type="submit" class="btn">Subir Letra</button>
+        </form>
+    </section>
+    
+    <!-- Modal de éxito -->
+    <div id="success-modal" class="modal">
+        <div class="modal-content">
+            <span id="close-modal" class="close-btn">&times;</span>
+            <p>¡Letra subida con éxito!</p>
+            <button class="btn" id="close-btn">Cerrar</button>
+        </div>
+    </div>
+</body>
+</html>
