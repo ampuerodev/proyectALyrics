@@ -111,6 +111,10 @@ async function setupExploreSongs() {
     // Mostrar canciones en la interfaz
     const displaySongs = (songsToDisplay) => {
         songList.innerHTML = ''; // Limpiar lista actual
+        if (Object.keys(songsToDisplay).length === 0) {
+            songList.innerHTML = "<p>No hay canciones disponibles.</p>";
+            return;
+        }
         Object.keys(songsToDisplay).forEach((key) => {
             const song = songsToDisplay[key];
             const songCard = document.createElement('div');
@@ -167,18 +171,25 @@ async function setupExploreSongs() {
     // Filtrar canciones por búsqueda
     searchBar.addEventListener('input', (e) => {
         const query = e.target.value.toLowerCase();
-        const filteredSongs = Object.keys(songs).filter((key) => {
-            const song = songs[key];
-            return (
-                song.title.toLowerCase().includes(query) ||
-                song.artist.toLowerCase().includes(query)
-            );
+        onValue(songsRef, (snapshot) => {
+            const songs = snapshot.val();
+            if (songs) {
+                const filteredSongs = Object.keys(songs).filter((key) => {
+                    const song = songs[key];
+                    return (
+                        song.title.toLowerCase().includes(query) ||
+                        song.artist.toLowerCase().includes(query)
+                    );
+                });
+                const filteredResults = filteredSongs.reduce((acc, key) => {
+                    acc[key] = songs[key];
+                    return acc;
+                }, {});
+                displaySongs(filteredResults);
+            } else {
+                displaySongs({});
+            }
         });
-        const filteredResults = filteredSongs.reduce((acc, key) => {
-            acc[key] = songs[key];
-            return acc;
-        }, {});
-        displaySongs(filteredResults);
     });
 }
 
