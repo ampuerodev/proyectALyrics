@@ -10,10 +10,19 @@
         <h2>Explorar Letras de Canciones</h2>
         <div class="form-group">
             <label for="search-bar">Buscar Canción</label>
-            <input type="text" id="search-bar" placeholder="Ingresa el título de una canción o artista">
+            <input type="text" id="search-bar" placeholder="Buscar canciones...">
         </div>
         <div id="song-list" class="song-grid">
             <!-- Aquí se mostrarán las canciones -->
+            <div class="song-card-content">
+                <p><strong>Artista:</strong> ${song.artist}</p>
+                <p><strong>Género:</strong> ${song.genre}</p>
+                <pre>${song.lyrics}</pre>
+                <div class="button-container">
+                    <button class="btn edit-btn" data-key="${key}">Editar</button>
+                    <button class="btn delete-btn" data-key="${key}">Eliminar</button>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -23,6 +32,55 @@
             <span id="close-delete-modal" class="close-btn">&times;</span>
             <p>¡Canción eliminada con éxito!</p>
             <button class="btn" id="close-delete-btn">Cerrar</button>
+        </div>
+    </div>
+
+    <!-- Modal de edición -->
+    <div id="edit-modal" class="modal">
+        <div class="modal-content">
+            <span id="close-edit-modal" class="close-btn">&times;</span>
+            <h2>Editar Canción</h2>
+            <form id="edit-form">
+                <div class="form-group">
+                    <label for="edit-song-title">Título de la Canción</label>
+                    <input type="text" id="edit-song-title" name="song-title" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-artist">Artista o Banda</label>
+                    <input type="text" id="edit-artist" name="artist" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-genre">Género Musical</label>
+                    <select id="edit-genre" name="genre">
+                        <option value="Pop">Pop</option>
+                        <option value="Rock">Rock</option>
+                        <option value="Hiphop">Hip-Hop</option>
+                        <option value="Jazz">Jazz</option>
+                        <option value="Classical">Clásica</option>
+                        <option value="Salsa">Salsa</option>
+                        <option value="Cumbia">Cumbia</option>
+                        <option value="Merengue">Merengue</option>
+                        <option value="Balada">Balada</option>
+                        <option value="Bachata">Bachata</option>
+                        <option value="Country">Country</option>
+                        <option value="Huayno">Huayno</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="edit-lyrics">Letra de la Canción</label>
+                    <textarea id="edit-lyrics" name="lyrics" required></textarea>
+                </div>
+                <button type="submit" class="btn">Guardar Cambios</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal de éxito de edición -->
+    <div id="edit-success-modal" class="modal">
+        <div class="modal-content">
+            <span id="close-edit-success-modal" class="close-btn">&times;</span>
+            <p>¡Letra editada con éxito!</p>
+            <button class="btn" id="close-edit-success-btn">Cerrar</button>
         </div>
     </div>
 </body>

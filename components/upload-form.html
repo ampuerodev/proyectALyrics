@@ -1,17 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Subir Letra de Canción</title>
 </head>
+
 <body>
     <section id="upload" class="form-section">
         <h2>Subir Letra de Canción</h2>
         <form id="upload-form">
             <div class="form-group">
                 <label for="song-title">Título de la Canción</label>
-                <input type="text" id="song-title" name="song-title" placeholder="Escribe el título de la canción" required>
+                <input type="text" id="song-title" name="song-title" placeholder="Escribe el título de la canción"
+                    required>
             </div>
             <div class="form-group">
                 <label for="artist">Artista o Banda</label>
@@ -20,18 +23,18 @@
             <div class="form-group">
                 <label for="genre">Género Musical</label>
                 <select id="genre" name="genre">
-                    <option value="">Seleccionar</option>
-                    <option value="pop">Pop</option>
-                    <option value="rock">Rock</option>
-                    <option value="hiphop">Hip-Hop</option>
-                    <option value="jazz">Jazz</option>
-                    <option value="classical">Clásica</option>
-                    <option value="salsa">Salsa</option>
-                    <option value="cumbia">Cumbia</option>
-                    <option value="merengue">Merengue</option>
-                    <option value="bachata">Bachata</option>
-                    <option value="country">Country</option>
-                    <option value="huayno">Huayno</option>
+                    <option value="Pop">Pop</option>
+                    <option value="Rock">Rock</option>
+                    <option value="Hiphop">Hip-Hop</option>
+                    <option value="Jazz">Jazz</option>
+                    <option value="Classical">Clásica</option>
+                    <option value="Salsa">Salsa</option>
+                    <option value="Cumbia">Cumbia</option>
+                    <option value="Merengue">Merengue</option>
+                    <option value="Balada">Balada</option>
+                    <option value="Bachata">Bachata</option>
+                    <option value="Country">Country</option>
+                    <option value="Huayno">Huayno</option>
                 </select>
             </div>
             <div class="form-group">
@@ -41,7 +44,7 @@
             <button type="submit" class="btn">Subir Letra</button>
         </form>
     </section>
-    
+
     <!-- Modal de éxito -->
     <div id="success-modal" class="modal">
         <div class="modal-content">
@@ -51,4 +54,5 @@
         </div>
     </div>
 </body>
+
 </html>

@@ -22,20 +22,32 @@ console.log("Firebase inicializado correctamente");
 
 // Función para cargar componentes
 async function loadComponent(containerId, componentPath) {
-    const container = document.getElementById(containerId);
-    const response = await fetch(componentPath);
-    const content = await response.text();
-    container.innerHTML = content;
-    console.log(`Componente cargado en ${containerId}`);
+    try {
+        const container = document.getElementById(containerId);
+        if (!container) {
+            console.error(`No se encontró el contenedor con ID: ${containerId}`);
+            return;
+        }
 
-    // Componente para subir canciones
-    if (containerId === 'upload-container') {
-        setupUploadForm();
-    }
+        const response = await fetch(componentPath);
+        if (!response.ok) {
+            throw new Error(`Error al cargar el componente desde ${componentPath}: ${response.statusText}`);
+        }
 
-    // Componente para explorar canciones
-    if (containerId === 'explore-container') {
-        setupExploreSongs();
+        const content = await response.text();
+        container.innerHTML = content;
+        console.log(`Componente cargado en ${containerId}`);
+
+        // Configurar eventos después de cargar el componente
+        if (containerId === 'upload-container') {
+            setupUploadForm();
+        }
+
+        if (containerId === 'explore-container') {
+            setupExploreSongs();
+        }
+    } catch (error) {
+        console.error(`Error al cargar el componente en ${containerId}:`, error);
     }
 }
 
@@ -74,7 +86,6 @@ function setupUploadForm() {
         }
 
         try {
-            // Subir la canción a la base de datos
             const newSongRef = ref(db, 'songs/' + songTitle);
             await set(newSongRef, { title: songTitle, artist, genre, lyrics });
             showModal(); // Mostrar el modal
@@ -108,11 +119,78 @@ async function setupExploreSongs() {
     closeDeleteModalButton.addEventListener('click', closeDeleteModal);
     closeDeleteModalButtonAlt?.addEventListener('click', closeDeleteModal);
 
+    // Seleccionar elementos del DOM relacionados con la edición
+    const editModal = document.getElementById('edit-modal');
+    const editForm = document.getElementById('edit-form');
+    const closeEditModalButton = document.getElementById('close-edit-modal');
+    const editSuccessModal = document.getElementById('edit-success-modal');
+    const closeEditSuccessButton = document.getElementById('close-edit-success-btn');
+
+    let currentEditKey = null;
+
+    // Función para abrir el modal de edición con datos precargados
+    const openEditModal = (songKey, songData) => {
+        currentEditKey = songKey;
+        document.getElementById('edit-song-title').value = songData.title;
+        document.getElementById('edit-artist').value = songData.artist;
+        document.getElementById('edit-genre').value = songData.genre;
+        document.getElementById('edit-lyrics').value = songData.lyrics;
+        editModal.style.display = 'flex';
+    };
+
+    // Función para cerrar el modal de edición
+    const closeEditModal = () => {
+        editModal.style.display = 'none';
+    };
+
+    // Función para mostrar el modal de éxito de edición
+    const showEditSuccessModal = () => {
+        editSuccessModal.style.display = 'flex';
+    };
+
+    // Función para cerrar el modal de éxito de edición
+    const closeEditSuccessModal = () => {
+        editSuccessModal.style.display = 'none';
+    };
+
+    // Eventos para cerrar los modales
+    closeEditModalButton.addEventListener('click', closeEditModal);
+    closeEditSuccessButton.addEventListener('click', closeEditSuccessModal);
+
+    // Manejo del formulario de edición
+    editForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const updatedSong = {
+            title: document.getElementById('edit-song-title').value.trim(),
+            artist: document.getElementById('edit-artist').value.trim(),
+            genre: document.getElementById('edit-genre').value,
+            lyrics: document.getElementById('edit-lyrics').value.trim(),
+        };
+
+        if (!updatedSong.title || !updatedSong.artist || !updatedSong.genre || !updatedSong.lyrics) {
+            alert('Por favor completa todos los campos.');
+            return;
+        }
+
+        try {
+            // Actualizar la canción en Firebase
+            const songRef = ref(db, 'songs/' + currentEditKey);
+            await set(songRef, updatedSong);
+
+            closeEditModal(); // Cerrar el modal de edición
+            showEditSuccessModal(); // Mostrar el modal de éxito
+        } catch (error) {
+            console.error('Error al editar la canción:', error);
+            alert('Hubo un error al guardar los cambios.');
+        }
+    });
+
     // Mostrar canciones en la interfaz
     const displaySongs = (songsToDisplay) => {
-        songList.innerHTML = ''; // Limpiar lista actual
+        songList.innerHTML = '';
         if (Object.keys(songsToDisplay).length === 0) {
-            songList.innerHTML = "<p>No hay canciones disponibles.</p>";
+            songList.innerHTML = '<p>No hay canciones disponibles.</p>';
             return;
         }
         Object.keys(songsToDisplay).forEach((key) => {
@@ -125,71 +203,50 @@ async function setupExploreSongs() {
                     <p><strong>Artista:</strong> ${song.artist}</p>
                     <p><strong>Género:</strong> ${song.genre}</p>
                     <pre>${song.lyrics}</pre>
-                    <button class="btn delete-btn" data-key="${key}">Eliminar</button>
+                    <div class="button-container">
+                        <button class="btn edit-btn" data-key="${key}">Editar</button>
+                        <button class="btn delete-btn" data-key="${key}">Eliminar</button>
+                    </div>
                 </div>
             `;
-            songCard.addEventListener('click', (e) => {
-                if (e.target.classList.contains('delete-btn')) {
-                    return; // Evitar redirección si se hace clic en el botón de eliminar
-                }
-                const queryParams = new URLSearchParams({
-                    title: song.title,
-                    artist: song.artist,
-                    genre: song.genre,
-                    lyrics: song.lyrics
-                });
-                window.location.href = `components/song-details.html?${queryParams.toString()}`;
-            });
-            songList.appendChild(songCard);
-        });
 
-        // Agregar manejador de eventos para los botones de eliminar
-        document.querySelectorAll('.delete-btn').forEach(button => {
-            button.addEventListener('click', async (e) => {
-                const key = e.target.getAttribute('data-key');
+            // Agregar evento para el botón de editar
+            songCard.querySelector('.edit-btn').addEventListener('click', () => {
+                openEditModal(key, song);
+            });
+
+            // Agregar evento para el botón de eliminar
+            songCard.querySelector('.delete-btn').addEventListener('click', async () => {
                 try {
                     await remove(ref(db, 'songs/' + key));
-                    showDeleteModal(); // Mostrar el modal de eliminación exitosa
+                    showDeleteModal();
                 } catch (error) {
                     console.error('Error al eliminar la canción:', error);
-                    alert('Hubo un error al eliminar la canción');
+                    alert('Hubo un error al eliminar la canción.');
                 }
             });
+
+            songList.appendChild(songCard);
         });
     };
 
     // Escuchar cambios en tiempo real
     onValue(songsRef, (snapshot) => {
         const songs = snapshot.val();
-        if (songs) {
-            displaySongs(songs);
-        } else {
-            songList.innerHTML = "<p>No hay canciones disponibles.</p>";
-        }
+        displaySongs(songs);
     });
 
     // Filtrar canciones por búsqueda
     searchBar.addEventListener('input', (e) => {
-        const query = e.target.value.toLowerCase();
-        onValue(songsRef, (snapshot) => {
-            const songs = snapshot.val();
-            if (songs) {
-                const filteredSongs = Object.keys(songs).filter((key) => {
-                    const song = songs[key];
-                    return (
-                        song.title.toLowerCase().includes(query) ||
-                        song.artist.toLowerCase().includes(query)
-                    );
-                });
-                const filteredResults = filteredSongs.reduce((acc, key) => {
-                    acc[key] = songs[key];
-                    return acc;
-                }, {});
-                displaySongs(filteredResults);
-            } else {
-                displaySongs({});
+        const searchTerm = e.target.value.toLowerCase();
+        const filteredSongs = {};
+        for (const key in songs) {
+            const song = songs[key];
+            if (song.title.toLowerCase().includes(searchTerm) || song.artist.toLowerCase().includes(searchTerm)) {
+                filteredSongs[key] = song;
             }
-        });
+        }
+        displaySongs(filteredSongs);
     });
 }
 

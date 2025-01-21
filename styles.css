@@ -132,6 +132,9 @@ header h1 {
 
 .song-card-content {
     padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem; /* Espacio entre los elementos */
 }
 
 .song-card-content p {
@@ -318,4 +321,38 @@ header h1 {
 
 .delete-btn:hover {
     background: #d32f2f;
+}
+
+/* Estilos generales para los botones */
+.btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 5px;
+}
+
+/* Estilos específicos para el botón de editar */
+.edit-btn {
+    background-color: #4CAF50; /* Verde */
+    color: white;
+}
+
+/* Estilos específicos para el botón de eliminar */
+.delete-btn {
+    background-color: #f44336; /* Rojo */
+    color: white;
+}
+
+/* Opcional: Estilos para el hover de los botones */
+.btn:hover {
+    opacity: 0.8;
+}
+
+/* Contenedor para los botones */
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
 }
