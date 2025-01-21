@@ -204,11 +204,17 @@ async function setupExploreSongs() {
                     <p><strong>Género:</strong> ${song.genre}</p>
                     <pre>${song.lyrics}</pre>
                     <div class="button-container">
+                        <button class="btn view-btn" data-key="${key}">Ver</button>
                         <button class="btn edit-btn" data-key="${key}">Editar</button>
                         <button class="btn delete-btn" data-key="${key}">Eliminar</button>
                     </div>
                 </div>
             `;
+
+            // Agregar evento para el botón de visualizar
+            songCard.querySelector('.view-btn').addEventListener('click', () => {
+                window.location.href = `components/song-details.html?title=${encodeURIComponent(song.title)}&artist=${encodeURIComponent(song.artist)}&genre=${encodeURIComponent(song.genre)}&lyrics=${encodeURIComponent(song.lyrics)}`;
+            });
 
             // Agregar evento para el botón de editar
             songCard.querySelector('.edit-btn').addEventListener('click', () => {

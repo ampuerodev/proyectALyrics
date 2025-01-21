@@ -345,6 +345,12 @@ header h1 {
     color: white;
 }
 
+/* Estilos específicos para el botón de visualizar */
+.view-btn {
+    background-color: #2196F3; /* Azul */
+    color: white;
+}
+
 /* Opcional: Estilos para el hover de los botones */
 .btn:hover {
     opacity: 0.8;
