@@ -127,6 +127,7 @@ async function setupExploreSongs() {
     const closeEditSuccessButton = document.getElementById('close-edit-success-btn');
 
     let currentEditKey = null;
+    let songs = {}; // Declarar la variable songs en un alcance accesible
 
     // Función para abrir el modal de edición con datos precargados
     const openEditModal = (songKey, songData) => {
@@ -238,7 +239,8 @@ async function setupExploreSongs() {
 
     // Escuchar cambios en tiempo real
     onValue(songsRef, (snapshot) => {
-        const songs = snapshot.val();
+        songs = snapshot.val(); // Actualizar la variable songs
+        console.log(songs); // Verifica que los datos se están cargando correctamente
         displaySongs(songs);
     });
 
