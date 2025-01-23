@@ -1,6 +1,6 @@
 // Importaciones de Firebase
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-import { getDatabase, ref, set, onValue, remove } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
+import { getDatabase, ref, set, onValue, remove, update } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
 
 // Configuración de Firebase
 const firebaseConfig = {
@@ -46,6 +46,10 @@ async function loadComponent(containerId, componentPath) {
         if (containerId === 'explore-container') {
             setupExploreSongs();
         }
+
+        if (containerId === 'favorites-container') {
+            setupFavorites();
+        }
     } catch (error) {
         console.error(`Error al cargar el componente en ${containerId}:`, error);
     }
@@ -87,7 +91,7 @@ function setupUploadForm() {
 
         try {
             const newSongRef = ref(db, 'songs/' + songTitle);
-            await set(newSongRef, { title: songTitle, artist, genre, lyrics });
+            await set(newSongRef, { title: songTitle, artist, genre, lyrics, favorite: false });
             showModal(); // Mostrar el modal
             uploadForm.reset(); // Limpiar el formulario
         } catch (error) {
@@ -187,6 +191,16 @@ async function setupExploreSongs() {
         }
     });
 
+    // Función para manejar favoritos
+    const toggleFavorite = async (key, isFavorite) => {
+        try {
+            const songRef = ref(db, 'songs/' + key);
+            await update(songRef, { favorite: !isFavorite });
+        } catch (error) {
+            console.error('Error al actualizar el favorito:', error);
+        }
+    };
+
     // Mostrar canciones en la interfaz
     const displaySongs = (songsToDisplay) => {
         songList.innerHTML = '';
@@ -199,7 +213,12 @@ async function setupExploreSongs() {
             const songCard = document.createElement('div');
             songCard.classList.add('song-card');
             songCard.innerHTML = `
-                <h3>${song.title}</h3>
+                <div class="song-header">
+                    <h3>${song.title}</h3>
+                    <button class="favorite-btn ${song.favorite ? 'active' : ''}" data-key="${key}">
+                        <span class="heart-icon">&#x2764;</span>
+                    </button>
+                </div>
                 <div class="song-card-content">
                     <p><strong>Artista:</strong> ${song.artist}</p>
                     <p><strong>Género:</strong> ${song.genre}</p>
@@ -233,6 +252,15 @@ async function setupExploreSongs() {
                 }
             });
 
+            // Agregar evento para el botón de favoritos
+            songCard.querySelector('.favorite-btn').addEventListener('click', async (e) => {
+                const button = e.currentTarget;
+                const key = button.getAttribute('data-key');
+                const isFavorite = button.classList.contains('active');
+                await toggleFavorite(key, isFavorite);
+                button.classList.toggle('active');
+            });
+
             songList.appendChild(songCard);
         });
     };
@@ -258,9 +286,43 @@ async function setupExploreSongs() {
     });
 }
 
+// Configuración para mostrar favoritos
+async function setupFavorites() {
+    const favoritesList = document.getElementById('favorites-list');
+    const songsRef = ref(db, 'songs');
+
+    // Mostrar canciones favoritas en la interfaz
+    const displayFavorites = (songsToDisplay) => {
+        favoritesList.innerHTML = '';
+        if (Object.keys(songsToDisplay).length === 0) {
+            favoritesList.innerHTML = '<p>No hay canciones favoritas disponibles.</p>';
+            return;
+        }
+        Object.keys(songsToDisplay).forEach((key) => {
+            const song = songsToDisplay[key];
+            if (song.favorite) {
+                const favoriteItem = document.createElement('div');
+                favoriteItem.classList.add('favorite-item');
+                favoriteItem.innerHTML = `
+                    <h3>${song.title}</h3>
+                    <p>${song.artist}</p>
+                `;
+                favoritesList.appendChild(favoriteItem);
+            }
+        });
+    };
+
+    // Escuchar cambios en tiempo real
+    onValue(songsRef, (snapshot) => {
+        const songs = snapshot.val();
+        displayFavorites(songs);
+    });
+}
+
 // Inicializar la aplicación
 document.addEventListener('DOMContentLoaded', () => {
     loadComponent('nav-container', 'components/nav.html');
     loadComponent('upload-container', 'components/upload-form.html');
     loadComponent('explore-container', 'components/explore-songs.html');
+    loadComponent('favorites-container', 'components/favorites.html');
 });

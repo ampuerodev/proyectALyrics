@@ -5,6 +5,7 @@
     box-sizing: border-box;
 }
 
+/* Estilos generales */
 body {
     font-family: 'Arial', sans-serif;
     line-height: 1.6;
@@ -41,6 +42,12 @@ header h1 {
 }
 
 .form-section h2, .explore-section h2 {
+    margin-bottom: 1rem;
+    color: #4caf50;
+    font-size: 2rem;
+}
+
+.favorites-section h2 {
     margin-bottom: 1rem;
     color: #4caf50;
     font-size: 2rem;
@@ -361,4 +368,80 @@ header h1 {
     display: flex;
     justify-content: space-between;
     margin-top: 1rem;
+}
+
+/* Estilos para el botón de favoritos */
+.favorite-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.5rem;
+    color: #eaeaea;
+    margin-left: 10px; /* Ajusta el margen izquierdo para separar del título */
+    margin-right: 10px; /* Ajusta el margen derecho para separar del borde */
+    display: flex;
+    align-items: center;
+}
+
+.favorite-btn .heart-icon {
+    color: #eaeaea;
+    transition: color 0.3s ease;
+}
+
+.favorite-btn.active .heart-icon {
+    color: #e53935; /* Rojo para favoritos */
+}
+
+.favorite-btn:hover .heart-icon {
+    color: #f44336; /* Rojo más claro al pasar el cursor */
+}
+
+/* Estilos para la sección de favoritos */
+.favorites-section {
+    background: #1f1f1f;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    margin-bottom: 2rem;
+}
+
+.favorites-section h2 {
+    margin-bottom: 1rem;
+    color: #4caf50;
+    font-size: 2rem;
+}
+
+.favorites-list {
+    list-style: none;
+    padding: 0;
+}
+
+.favorites-list .favorite-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #212121, #1a1a1a);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.favorites-list .favorite-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+}
+
+.favorites-list .favorite-item h3 {
+    margin: 0;
+    color: #4caf50;
+    font-size: 1.5rem;
+}
+
+.favorites-list .favorite-item p {
+    margin: 0.5rem 0 0;
+    color: #eaeaea;
+    font-size: 1rem;
 }

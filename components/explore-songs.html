@@ -15,6 +15,12 @@
         <div id="song-list" class="song-grid">
             <!-- Aquí se mostrarán las canciones -->
             <div class="song-card-content">
+                <div class="song-header">
+                    <h3>${song.title}</h3>
+                    <button class="favorite-btn" data-key="${key}">
+                        <span class="heart-icon">&#x2764;</span>
+                    </button>
+                </div>
                 <p><strong>Artista:</strong> ${song.artist}</p>
                 <p><strong>Género:</strong> ${song.genre}</p>
                 <pre>${song.lyrics}</pre>
